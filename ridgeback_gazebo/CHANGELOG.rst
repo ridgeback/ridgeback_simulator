@@ -1,5 +1,5 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package jackal_gazebo
+Changelog for package ridgeback_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 0.3.0 (2015-01-20)
@@ -10,7 +10,7 @@ Changelog for package jackal_gazebo
 
 0.2.3 (2014-12-12)
 ------------------
-* Added jackal_race world.
+* Added ridgeback_race world.
 * Add hector_gazebo_plugins dependency.
 * Contributors: Mike Purvis, spourmehr
 
@@ -27,7 +27,7 @@ Changelog for package jackal_gazebo
 
 0.2.0 (2014-09-09)
 ------------------
-* Default world for Jackal sim is now a green one.
+* Default world for Ridgeback sim is now a green one.
 * Add missing dependencies on Gazebo plugin packages.
 * Contributors: Mike Purvis
 

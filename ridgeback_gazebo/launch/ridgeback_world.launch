@@ -2,7 +2,7 @@
   <arg name="use_sim_time" default="true" />
   <arg name="gui" default="true" />
   <arg name="headless" default="false" />
-  <arg name="world_name" default="$(find jackal_gazebo)/worlds/jackal_race.world" />
+  <arg name="world_name" default="$(find ridgeback_gazebo)/worlds/ridgeback_race.world" />
 
   <!-- Short-term hack to support the original front_laser:=true argument for spawning
        the simulator. This will be removed in favour of using the config:=x arg instead. -->
@@ -11,8 +11,8 @@
   <arg name="default_config" value="base" unless="$(arg front_laser)" /> 
   <!-- end of hack -->
 
-  <!-- Configuration of Jackal which you would like to simulate.
-       See jackal_description for details. -->
+  <!-- Configuration of Ridgeback which you would like to simulate.
+       See ridgeback_description for details. -->
   <arg name="config" default="$(arg default_config)" />
 
   <!-- Launch Gazebo with the specified world -->
@@ -24,16 +24,16 @@
     <arg name="world_name" value="$(arg world_name)" />
   </include>
 
-  <!-- Load Jackal's description, controllers, and teleop nodes. -->
-  <include file="$(find jackal_description)/launch/description.launch">
+  <!-- Load Ridgeback's description, controllers, and teleop nodes. -->
+  <include file="$(find ridgeback_description)/launch/description.launch">
     <arg name="config" value="$(arg config)" />
   </include>
-  <include file="$(find jackal_control)/launch/control.launch" />
-  <include file="$(find jackal_control)/launch/teleop.launch">
+  <include file="$(find ridgeback_control)/launch/control.launch" />
+  <include file="$(find ridgeback_control)/launch/teleop.launch">
     <arg name="joystick" value="false"/>
   </include>
 
-  <!-- Spawn Jackal -->
+  <!-- Spawn Ridgeback -->
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
-	      args="-urdf -model jackal -param robot_description -x 0 -y 0 -z 1.0" />
+          args="-urdf -model ridgeback -param robot_description -x 0 -y 0 -z 1.0" />
 </launch>
