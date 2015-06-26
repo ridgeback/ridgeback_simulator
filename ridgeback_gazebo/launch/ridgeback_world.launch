@@ -32,8 +32,10 @@
   <include file="$(find ridgeback_control)/launch/teleop.launch">
     <arg name="joystick" value="false"/>
   </include>
-
+ 
   <!-- Spawn Ridgeback -->
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
-          args="-urdf -model ridgeback -param robot_description -x 0 -y 0 -z 1.0" />
+        args="-urdf -model ridgeback -param robot_description -x 0 -y 0 -z 1.0" /> 
+  <!--<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+        args="-sdf -model ridgeback -file /Users/mikepurvis/ridgeback_ws/ridgeback.sdf -x 0 -y 0 -z 1.0" /> -->
 </launch>
