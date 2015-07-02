@@ -1,17 +1,14 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(mecanum_gazebo_plugin)
 
-find_package(catkin REQUIRED COMPONENTS gazebo_plugins gazebo_ros)
+find_package(catkin REQUIRED COMPONENTS rosconsole)
 find_package(gazebo)
 
 catkin_package(
-  INCLUDE_DIRS include
   LIBRARIES mecanum_gazebo_plugin
-  CATKIN_DEPENDS gazebo_plugins gazebo_ros
 )
 
 include_directories(
-  include
   ${catkin_INCLUDE_DIRS}
   ${GAZEBO_INCLUDE_DIRS}
 )
