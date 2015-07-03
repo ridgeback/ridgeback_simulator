@@ -30,6 +30,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <gazebo/physics/physics.hh>
 #include <ros/console.h>
 
+#include <string>
+
 
 namespace gazebo
 {
@@ -53,40 +55,51 @@ private:
 // Register this plugin with the simulator
 GZ_REGISTER_MODEL_PLUGIN(MecanumPlugin);
 
-void MecanumPlugin::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
+void MecanumPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
 {
   // Store the model
   model_ = _parent;
 
   std::string link_name;
 
-  if(_sdf->HasElement("wheelLinkName")) {
+  if (_sdf->HasElement("wheelLinkName"))
+  {
     link_name = _sdf->Get<std::string>("wheelLinkName");
-  } else {
+  }
+  else
+  {
     ROS_FATAL("The mecanum plugin requires a `wheelLinkName` parameter.");
     return;
   }
+
   if (!(wheel_link_ = model_->GetLink(link_name)))
   {
     ROS_FATAL_STREAM("Wheel link [" << link_name << "] not found!");
     return;
   }
 
-  if(_sdf->HasElement("fixedLinkName")) {
+  if (_sdf->HasElement("fixedLinkName"))
+  {
     link_name = _sdf->Get<std::string>("fixedLinkName");
-  } else {
+  }
+  else
+  {
     ROS_FATAL("The mecanum plugin requires a `fixedLinkName` parameter.");
     return;
   }
+
   if (!(fixed_link_ = model_->GetLink(link_name)))
   {
     ROS_FATAL_STREAM("Fixed link [" << link_name << "] not found!");
     return;
   }
 
-  if(_sdf->HasElement("rollerAngle")) {
+  if (_sdf->HasElement("rollerAngle"))
+  {
     roller_angle_ = _sdf->Get<double>("rollerAngle");
-  } else {
+  }
+  else
+  {
     roller_angle_ = M_PI / 4;
   }
 
