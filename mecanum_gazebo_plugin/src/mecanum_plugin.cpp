@@ -30,8 +30,6 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <gazebo/physics/physics.hh>
 #include <ros/console.h>
 
-static const double PI = 3.14159265359;
-
 
 namespace gazebo
 {
@@ -54,7 +52,6 @@ private:
 
 // Register this plugin with the simulator
 GZ_REGISTER_MODEL_PLUGIN(MecanumPlugin);
-
 
 void MecanumPlugin::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
 {
@@ -90,7 +87,7 @@ void MecanumPlugin::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
   if(_sdf->HasElement("rollerAngle")) {
     roller_angle_ = _sdf->Get<double>("rollerAngle");
   } else {
-    roller_angle_ = PI / 4;
+    roller_angle_ = M_PI / 4;
   }
 
   ROS_INFO_STREAM("Mecanum plugin initialized for " << wheel_link_->GetName() <<
