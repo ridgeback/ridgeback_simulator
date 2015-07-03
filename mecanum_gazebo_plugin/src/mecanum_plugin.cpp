@@ -64,6 +64,12 @@ void MecanumPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
   if (_sdf->HasElement("wheelLinkName"))
   {
     link_name = _sdf->Get<std::string>("wheelLinkName");
+    wheel_link_ = model_->GetLink(link_name);
+    if (!wheel_link_)
+    {
+      ROS_FATAL_STREAM("Wheel link [" << link_name << "] not found!");
+      return;
+    }
   }
   else
   {
@@ -71,25 +77,19 @@ void MecanumPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
     return;
   }
 
-  if (!(wheel_link_ = model_->GetLink(link_name)))
-  {
-    ROS_FATAL_STREAM("Wheel link [" << link_name << "] not found!");
-    return;
-  }
-
   if (_sdf->HasElement("fixedLinkName"))
   {
     link_name = _sdf->Get<std::string>("fixedLinkName");
+    fixed_link_ = model_->GetLink(link_name);
+    if (!fixed_link_)
+    {
+      ROS_FATAL_STREAM("Fixed link [" << link_name << "] not found!");
+      return;
+    }
   }
   else
   {
     ROS_FATAL("The mecanum plugin requires a `fixedLinkName` parameter.");
-    return;
-  }
-
-  if (!(fixed_link_ = model_->GetLink(link_name)))
-  {
-    ROS_FATAL_STREAM("Fixed link [" << link_name << "] not found!");
     return;
   }
 
