@@ -25,7 +25,6 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 
 #include <gazebo/common/Events.hh>
 #include <gazebo/common/Plugin.hh>
-#include <gazebo/common/Time.hh>
 #include <gazebo/physics/ode/ODESurfaceParams.hh>
 #include <gazebo/physics/physics.hh>
 #include <ros/console.h>
