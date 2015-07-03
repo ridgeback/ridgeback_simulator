@@ -12,6 +12,7 @@
   <url type="website">http://wiki.ros.org/mecanum_gazebo_plugin</url>
 
   <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roslint</build_depend>
   <depend>gazebo</depend>
   <depend>rosconsole</depend>
 </package>
