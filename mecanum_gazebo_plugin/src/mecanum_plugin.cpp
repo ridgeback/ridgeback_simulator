@@ -119,17 +119,20 @@ void MecanumPlugin::GazeboUpdate()
   double wheel_angle = wheel_orientation.GetPitch();
   ROS_DEBUG_STREAM(wheel_link_->GetName() << " angle is " << wheel_angle << " radians.");
 
+  // TODO: Understand better what the deal is with multiple collisions on a link.
   unsigned int collision_index = 0;
   physics::SurfaceParamsPtr surface = wheel_link_->GetCollision(collision_index)->GetSurface();
 
-  // This cast will fail if not using ODE. How to check for this?
+  // TODO: Check that the physics engine is ODE to avoid a segfault here.
   physics::ODESurfaceParams* ode_surface = dynamic_cast<physics::ODESurfaceParams*>(surface.get());
   physics::FrictionPyramid& fric(ode_surface->frictionPyramid);
 
+  // TODO: Parameterize these.
   fric.SetMuPrimary(0.1);
   fric.SetMuSecondary(1000);
 
-  // Could Pose::rot::RotateVector work here?
+  // TODO: Investigate replacing this manual trigonometry with Pose::rot::RotateVector. Doing this
+  // would also make it easier to support wheels which rotate about an axis other than Y.
   fric.direction1.x = cos(roller_angle_) * cos(wheel_angle);
   fric.direction1.y = sin(roller_angle_);
   fric.direction1.z = cos(roller_angle_) * sin(wheel_angle);
