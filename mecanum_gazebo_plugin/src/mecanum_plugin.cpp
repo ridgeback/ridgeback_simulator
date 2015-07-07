@@ -153,9 +153,9 @@ void MecanumPlugin::GazeboUpdate()
 
   // TODO: Investigate replacing this manual trigonometry with Pose::rot::RotateVector. Doing this
   // would also make it easier to support wheels which rotate about an axis other than Y.
-  fric.direction1.x = std::abs(cos(roller_angle_) * cos(wheel_angle));
+  fric.direction1.x = cos(roller_angle_) * cos(wheel_angle);
   fric.direction1.y = sin(roller_angle_);
-  fric.direction1.z = std::abs(cos(roller_angle_) * sin(wheel_angle));
+  fric.direction1.z = cos(roller_angle_) * sin(wheel_angle);
 }
 
 }  // namespace gazebo
