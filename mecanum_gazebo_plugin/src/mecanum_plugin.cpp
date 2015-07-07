@@ -49,6 +49,8 @@ private:
   physics::LinkPtr wheel_link_;
   physics::LinkPtr fixed_link_;
   double roller_angle_;
+  double roller_friction_;
+  double roller_skid_friction_;
 };
 
 // Register this plugin with the simulator
@@ -102,6 +104,24 @@ void MecanumPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
     roller_angle_ = M_PI / 4;
   }
 
+  if (_sdf->HasElement("rollerFriction"))
+  {
+    roller_friction_ = _sdf->Get<double>("rollerFriction");
+  }
+  else
+  {
+    roller_friction_ = 100;
+  }
+
+  if (_sdf->HasElement("rollerSkidFriction"))
+  {
+    roller_skid_friction_ = _sdf->Get<double>("rollerSkidFriction");
+  }
+  else
+  {
+    roller_skid_friction_ = 100000;
+  }
+
   ROS_INFO_STREAM("Mecanum plugin initialized for " << wheel_link_->GetName() <<
                   ", referenced to " << fixed_link_->GetName() << ", with a roller " <<
                   "angle of " << roller_angle_ << " radians.");
@@ -128,14 +148,14 @@ void MecanumPlugin::GazeboUpdate()
   physics::FrictionPyramid& fric(ode_surface->frictionPyramid);
 
   // TODO: Parameterize these.
-  fric.SetMuPrimary(0.1);
-  fric.SetMuSecondary(1000);
+  fric.SetMuPrimary(roller_skid_friction_);
+  fric.SetMuSecondary(roller_friction_);
 
   // TODO: Investigate replacing this manual trigonometry with Pose::rot::RotateVector. Doing this
   // would also make it easier to support wheels which rotate about an axis other than Y.
-  fric.direction1.x = cos(roller_angle_) * cos(wheel_angle);
+  fric.direction1.x = std::abs(cos(roller_angle_) * cos(wheel_angle));
   fric.direction1.y = sin(roller_angle_);
-  fric.direction1.z = cos(roller_angle_) * sin(wheel_angle);
+  fric.direction1.z = std::abs(cos(roller_angle_) * sin(wheel_angle));
 }
 
 }  // namespace gazebo

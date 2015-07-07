@@ -33,6 +33,25 @@
     <arg name="joystick" value="false"/>
   </include>
 
+  <rosparam param="/gazebo_ros_control/pid_gains">
+    front_left_wheel:
+      p: 1
+      i: 0.1
+      d: 0
+    front_right_wheel:
+      p: 1
+      i: 0.1
+      d: 0
+    rear_left_wheel:
+      p: 1
+      i: 0.1
+      d: 0
+    rear_right_wheel:
+      p: 1
+      i: 0.1
+      d: 0
+  </rosparam>
+
   <!-- Spawn Ridgeback -->
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
         args="-urdf -model ridgeback -param robot_description -x 0 -y 0 -z 0.1" />
