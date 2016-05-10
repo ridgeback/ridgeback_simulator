@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>ridgeback_simulator</name>
-  <version>0.3.0</version>
+  <version>0.0.0</version>
   <description>Packages for simulating Ridgeback.</description>
 
   <maintainer email="mpurvis@clearpathrobotics.com">Mike Purvis</maintainer>
@@ -12,7 +12,7 @@
   <url type="website">http://wiki.ros.org/ridgeback_simulator</url>
 
   <buildtool_depend>catkin</buildtool_depend>
-  <run_depend version_gte="0.3">ridgeback_gazebo</run_depend>
+  <run_depend>ridgeback_gazebo</run_depend>
 
   <export><metapackage/></export>
 </package>

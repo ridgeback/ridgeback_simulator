@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>ridgeback_gazebo</name>
-  <version>0.3.0</version>
+  <version>0.0.0</version>
   <description>Launchfiles to use Ridgeback in Gazebo.</description>
 
   <maintainer email="mpurvis@clearpathrobotics.com">Mike Purvis</maintainer>
@@ -17,8 +17,8 @@
   <run_depend>gazebo_ros_control</run_depend>
   <run_depend>gazebo_plugins</run_depend>
   <run_depend>hector_gazebo_plugins</run_depend>
-  <run_depend version_gte="0.5">ridgeback_control</run_depend>
-  <run_depend version_gte="0.5">ridgeback_description</run_depend>
+  <run_depend>ridgeback_control</run_depend>
+  <run_depend>ridgeback_description</run_depend>
 
   <export>
     <gazebo_ros gazebo_media_path="${prefix}"/>
