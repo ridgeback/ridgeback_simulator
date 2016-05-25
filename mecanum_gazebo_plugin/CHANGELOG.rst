@@ -2,8 +2,8 @@
 Changelog for package mecanum_gazebo_plugin
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.1 (2016-05-25)
+------------------
 * Rewound version numbers and removed changes logs.
 * Disable building plugin (only works on Gazebo 5).
 * Remove experimental std::abs call from geometry.
