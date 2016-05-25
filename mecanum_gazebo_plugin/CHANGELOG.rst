@@ -1,0 +1,22 @@
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package mecanum_gazebo_plugin
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Forthcoming
+-----------
+* Rewound version numbers and removed changes logs.
+* Disable building plugin (only works on Gazebo 5).
+* Remove experimental std::abs call from geometry.
+* Parameterize roller friction, add gazebo_ros_control PID gains.
+* Add some specific TODO callouts.
+* Remove assignment from within if-condition.
+* Remove unused header.
+* Fix linter warnings.
+* Add roslint.
+* Use M_PI, remove extra line.
+* Fix url in package.xml
+* Fix indentation, add license.
+* Remove unnecessary build stuff.
+* Add roller angle parameter.
+* Skeleton of a mecanum gazebo plugin.
+* Contributors: Mike Purvis, Tony Baltovski
