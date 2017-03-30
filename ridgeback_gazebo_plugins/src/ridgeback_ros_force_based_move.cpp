@@ -90,9 +90,9 @@ namespace gazebo
     }
 
 
-    torque_yaw_velocity_p_gain_ = 100.0;
-    force_x_velocity_p_gain_ = 10000.0;
-    force_y_velocity_p_gain_ = 10000.0;
+    torque_yaw_velocity_p_gain_ = 10000.0;
+    force_x_velocity_p_gain_ = 100000.0;
+    force_y_velocity_p_gain_ = 100000.0;
 
     if (sdf->HasElement("yaw_velocity_p_gain"))
       (sdf->GetElement("yaw_velocity_p_gain")->GetValue()->Get(torque_yaw_velocity_p_gain_));
@@ -147,7 +147,31 @@ namespace gazebo
       cmd_vel_time_out_ = sdf->GetElement("cmdVelTimeOut")->Get<double>();
     }
 
-    this->publish_odometry_tf_ = true;
+    cmd_vel_linear_min_ = 0.01;
+    if (!sdf->HasElement("cmdVelLinearMin"))
+    {
+      ROS_WARN("PlanarMovePlugin (ns = %s) missing <cmdVelLinearMin>, "
+          "defaults to %f",
+          robot_namespace_.c_str(), cmd_vel_linear_min_);
+    }
+    else
+    {
+      cmd_vel_linear_min_ = sdf->GetElement("cmdVelLinearMin")->Get<double>();
+    }
+
+    cmd_vel_angular_min_ = 0.00001;
+    if (!sdf->HasElement("cmdVelAngularMin"))
+    {
+      ROS_WARN("PlanarMovePlugin (ns = %s) missing <cmdVelAngularMin>, "
+          "defaults to %f",
+          robot_namespace_.c_str(), cmd_vel_angular_min_);
+    }
+    else
+    {
+      cmd_vel_angular_min_ = sdf->GetElement("cmdVelAngularMin")->Get<double>();
+    }
+
+    this->publish_odometry_tf_ = false;
     if (!sdf->HasElement("publishOdometryTf")) {
       ROS_WARN("PlanarMovePlugin Plugin (ns = %s) missing <publishOdometryTf>, defaults to %s",
                this->robot_namespace_.c_str(), this->publish_odometry_tf_ ? "true" : "false");
@@ -157,9 +181,12 @@ namespace gazebo
 
     last_odom_publish_time_ = parent_->GetWorld()->GetSimTime();
     last_odom_pose_ = parent_->GetWorldPose();
-    x_ = 0;
-    y_ = 0;
-    rot_ = 0;
+    x_ = 0.0;
+    y_ = 0.0;
+    rot_ = 0.0;
+    error_x_ = 0.0;
+    error_y_ = 0.0;
+    error_rot_ = 0.0;
     alive_ = true;
 
     odom_transform_.setIdentity();
@@ -209,24 +236,43 @@ namespace gazebo
     boost::mutex::scoped_lock scoped_lock(lock);
     math::Pose pose = parent_->GetWorldPose();
 
-    math::Vector3 angular_vel = parent_->GetWorldAngularVel();
-
     if ((parent_->GetWorld()->GetSimTime() - last_cmd_vel_time_) > cmd_vel_time_out_) {
       x_ = 0.0;
       y_ = 0.0;
       rot_ = 0.0;
     }
+    math::Vector3 angular_vel = parent_->GetWorldAngularVel();
 
-    double error = angular_vel.z - rot_;
+    if (fabs(angular_vel.z) < cmd_vel_angular_min_) {
+      error_rot_ = 0.0;
+    }else{
+      error_rot_ = rot_ - angular_vel.z;
+    }
 
-    link_->AddTorque(math::Vector3(0.0, 0.0, -error * torque_yaw_velocity_p_gain_));
+    link_->AddTorque(math::Vector3(0.0, 0.0, error_rot_ * torque_yaw_velocity_p_gain_));
 
-    float yaw = pose.rot.GetYaw();
+    // float yaw = pose.rot.GetYaw();
 
     math::Vector3 linear_vel = parent_->GetRelativeLinearVel();
 
-    link_->AddRelativeForce(math::Vector3((x_ - linear_vel.x)* force_x_velocity_p_gain_,
-                                          (y_ - linear_vel.y)* force_y_velocity_p_gain_,
+    if (fabs(linear_vel.x) < cmd_vel_linear_min_) {
+      error_x_ = 0.0;
+    }else{
+      error_x_ = x_ - linear_vel.x;
+    }
+
+    if (fabs(linear_vel.y) < cmd_vel_linear_min_) {
+      error_y_ = 0.0;
+    }else{
+      error_y_ = y_ - linear_vel.y;
+    }
+
+    ROS_INFO_STREAM("x: " << x_ <<
+                                                 " ex: " <<error_x_ <<
+                                                 " vx: " << linear_vel.x << "\n");
+
+    link_->AddRelativeForce(math::Vector3(error_x_ *  force_x_velocity_p_gain_,
+                                          error_y_ * force_y_velocity_p_gain_,
                                           0.0));
     //parent_->PlaceOnNearestEntityBelow();
     //parent_->SetLinearVel(math::Vector3(

@@ -88,6 +88,8 @@ namespace gazebo {
       std::string robot_base_frame_;
       double odometry_rate_;
       double cmd_vel_time_out_;
+      double cmd_vel_linear_min_;
+      double cmd_vel_angular_min_;
       bool publish_odometry_tf_;
 
       // Custom Callback Queue
@@ -102,6 +104,9 @@ namespace gazebo {
       double x_;
       double y_;
       double rot_;
+      double error_x_;
+      double error_y_;
+      double error_rot_;
       bool alive_;
       common::Time last_odom_publish_time_;
       math::Pose last_odom_pose_;

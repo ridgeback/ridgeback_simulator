@@ -2,11 +2,11 @@
   <arg name="use_sim_time" default="true" />
   <arg name="gui" default="true" />
   <arg name="headless" default="false" />
-  <arg name="world_name" default="$(find ridgeback_gazebo)/worlds/test_race.world" />
+  <arg name="world_name" default="$(find ridgeback_gazebo)/worlds/ridgeback_open.world" />
 
   <!-- Configuration of Ridgeback which you would like to simulate.
        See ridgeback_description for details. -->
-  <arg name="config" default="$(optenv RIDGEBACK_CONFIG empty)" />
+  <arg name="config" default="$(optenv RIDGEBACK_CONFIG base)" />
 
   <!-- Launch Gazebo with the specified world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -29,20 +29,20 @@
 
   <rosparam param="/gazebo_ros_control/pid_gains">
     front_left_wheel:
-      p: 1
-      i: 0.1
+      p: 10
+      i: 0
       d: 0
     front_right_wheel:
-      p: 1
-      i: 0.1
+      p: 10
+      i: 0
       d: 0
     rear_left_wheel:
-      p: 1
-      i: 0.1
+      p: 10
+      i: 0
       d: 0
     rear_right_wheel:
-      p: 1
-      i: 0.1
+      p: 10
+      i: 0
       d: 0
   </rosparam>
 
