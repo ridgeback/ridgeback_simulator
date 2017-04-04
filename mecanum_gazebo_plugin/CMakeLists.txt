@@ -17,10 +17,10 @@ include_directories(
 #target_link_libraries(${PROJECT_NAME}
 #  ${catkin_LIBRARIES}
 #  ${GAZEBO_LIBRARIES}
-#)  
+#)
 
-roslint_cpp()
-roslint_add_test()
+# roslint_cpp()
+# roslint_add_test()
 
 #install(TARGETS ${PROJECT_NAME}
 #  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
