@@ -44,7 +44,7 @@ namespace gazebo
     robot_namespace_ = "";
     if (!sdf->HasElement("robotNamespace"))
     {
-      ROS_INFO("PlanarMovePlugin missing <robotNamespace>, "
+      ROS_INFO("ForceBasedPlugin missing <robotNamespace>, "
           "defaults to \"%s\"", robot_namespace_.c_str());
     }
     else
@@ -56,7 +56,7 @@ namespace gazebo
     command_topic_ = "cmd_vel";
     if (!sdf->HasElement("commandTopic"))
     {
-      ROS_WARN("PlanarMovePlugin (ns = %s) missing <commandTopic>, "
+      ROS_WARN("ForceBasedPlugin (ns = %s) missing <commandTopic>, "
           "defaults to \"%s\"",
           robot_namespace_.c_str(), command_topic_.c_str());
     }
@@ -68,7 +68,7 @@ namespace gazebo
     odometry_topic_ = "odom";
     if (!sdf->HasElement("odometryTopic"))
     {
-      ROS_WARN("PlanarMovePlugin (ns = %s) missing <odometryTopic>, "
+      ROS_WARN("ForceBasedPlugin (ns = %s) missing <odometryTopic>, "
           "defaults to \"%s\"",
           robot_namespace_.c_str(), odometry_topic_.c_str());
     }
@@ -80,7 +80,7 @@ namespace gazebo
     odometry_frame_ = "odom";
     if (!sdf->HasElement("odometryFrame"))
     {
-      ROS_WARN("PlanarMovePlugin (ns = %s) missing <odometryFrame>, "
+      ROS_WARN("ForceBasedPlugin (ns = %s) missing <odometryFrame>, "
           "defaults to \"%s\"",
           robot_namespace_.c_str(), odometry_frame_.c_str());
     }
@@ -110,7 +110,7 @@ namespace gazebo
     robot_base_frame_ = "base_footprint";
     if (!sdf->HasElement("robotBaseFrame"))
     {
-      ROS_WARN("PlanarMovePlugin (ns = %s) missing <robotBaseFrame>, "
+      ROS_WARN("ForceBasedPlugin (ns = %s) missing <robotBaseFrame>, "
           "defaults to \"%s\"",
           robot_namespace_.c_str(), robot_base_frame_.c_str());
     }
@@ -126,7 +126,7 @@ namespace gazebo
     odometry_rate_ = 20.0;
     if (!sdf->HasElement("odometryRate"))
     {
-      ROS_WARN("PlanarMovePlugin (ns = %s) missing <odometryRate>, "
+      ROS_WARN("ForceBasedPlugin (ns = %s) missing <odometryRate>, "
           "defaults to %f",
           robot_namespace_.c_str(), odometry_rate_);
     }
@@ -138,7 +138,7 @@ namespace gazebo
     cmd_vel_time_out_ = 0.25;
     if (!sdf->HasElement("cmdVelTimeOut"))
     {
-      ROS_WARN("PlanarMovePlugin (ns = %s) missing <cmdVelTimeOut>, "
+      ROS_WARN("ForceBasedPlugin (ns = %s) missing <cmdVelTimeOut>, "
           "defaults to %f",
           robot_namespace_.c_str(), cmd_vel_time_out_);
     }
@@ -149,7 +149,7 @@ namespace gazebo
 
     this->publish_odometry_tf_ = true;
     if (!sdf->HasElement("publishOdometryTf")) {
-      ROS_WARN("PlanarMovePlugin Plugin (ns = %s) missing <publishOdometryTf>, defaults to %s",
+      ROS_WARN("ForceBasedPlugin Plugin (ns = %s) missing <publishOdometryTf>, defaults to %s",
                this->robot_namespace_.c_str(), this->publish_odometry_tf_ ? "true" : "false");
     } else {
       this->publish_odometry_tf_ = sdf->GetElement("publishOdometryTf")->Get<bool>();
@@ -157,9 +157,9 @@ namespace gazebo
 
     last_odom_publish_time_ = parent_->GetWorld()->GetSimTime();
     last_odom_pose_ = parent_->GetWorldPose();
-    x_ = 0;
-    y_ = 0;
-    rot_ = 0;
+    x_ = 0.0;
+    y_ = 0.0;
+    rot_ = 0.0;
     alive_ = true;
 
     odom_transform_.setIdentity();
@@ -167,7 +167,7 @@ namespace gazebo
     // Ensure that ROS has been initialized and subscribe to cmd_vel
     if (!ros::isInitialized())
     {
-      ROS_FATAL_STREAM("PlanarMovePlugin (ns = " << robot_namespace_
+      ROS_FATAL_STREAM("ForceBasedPlugin (ns = " << robot_namespace_
         << "). A ROS node for Gazebo has not been initialized, "
         << "unable to load plugin. Load the Gazebo system plugin "
         << "'libgazebo_ros_api_plugin.so' in the gazebo_ros package)");
@@ -209,19 +209,18 @@ namespace gazebo
     boost::mutex::scoped_lock scoped_lock(lock);
     math::Pose pose = parent_->GetWorldPose();
 
-    math::Vector3 angular_vel = parent_->GetWorldAngularVel();
-
     if ((parent_->GetWorld()->GetSimTime() - last_cmd_vel_time_) > cmd_vel_time_out_) {
       x_ = 0.0;
       y_ = 0.0;
       rot_ = 0.0;
     }
 
-    double error = angular_vel.z - rot_;
+    math::Vector3 angular_vel = parent_->GetWorldAngularVel();
+    link_->AddTorque(math::Vector3(0.0,
+                                   0.0,
+                                   (rot_ - angular_vel.z) * torque_yaw_velocity_p_gain_));
 
-    link_->AddTorque(math::Vector3(0.0, 0.0, -error * torque_yaw_velocity_p_gain_));
-
-    float yaw = pose.rot.GetYaw();
+    // float yaw = pose.rot.GetYaw();
 
     math::Vector3 linear_vel = parent_->GetRelativeLinearVel();
 
