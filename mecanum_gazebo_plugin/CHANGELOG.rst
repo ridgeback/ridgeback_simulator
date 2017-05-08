@@ -2,8 +2,8 @@
 Changelog for package mecanum_gazebo_plugin
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.2 (2017-05-08)
+------------------
 * Disabled tests for mecanum_gazebo_plugin.
 * Contributors: Tony Baltovski
 
