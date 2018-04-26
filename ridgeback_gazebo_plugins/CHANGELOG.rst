@@ -2,6 +2,11 @@
 Changelog for package ridgeback_gazebo_plugins
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fixed deps for kinetic.
+* Contributors: Tony Baltovski
+
 0.0.2 (2017-05-08)
 ------------------
 * Changed Ridgeback config to environment variable and minor clean-up of ForceBasedPlugin.
