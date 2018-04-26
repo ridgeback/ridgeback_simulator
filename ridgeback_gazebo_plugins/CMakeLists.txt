@@ -19,7 +19,6 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 
 catkin_package(
-    DEPENDS gazebo
     CATKIN_DEPENDS roscpp std_msgs geometry_msgs nav_msgs tf message_runtime
     INCLUDE_DIRS include
     LIBRARIES
