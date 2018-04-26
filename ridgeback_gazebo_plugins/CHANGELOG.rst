@@ -2,8 +2,8 @@
 Changelog for package ridgeback_gazebo_plugins
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.3 (2018-04-26)
+------------------
 * Fixed deps for kinetic.
 * Contributors: Tony Baltovski
 
