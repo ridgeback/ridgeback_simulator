@@ -30,6 +30,8 @@
 #include <boost/thread.hpp>
 #include <map>
 
+// #include <ignition/math/Pose3.hh>
+// #include <ignition/math/Vector3.hh>
 #include <gazebo/common/common.hh>
 #include <gazebo/physics/physics.hh>
 #include <sdf/sdf.hh>
@@ -104,7 +106,7 @@ namespace gazebo {
       double rot_;
       bool alive_;
       common::Time last_odom_publish_time_;
-      math::Pose last_odom_pose_;
+      ignition::math::Pose3d last_odom_pose_;
 
       double torque_yaw_velocity_p_gain_;
       double force_x_velocity_p_gain_;
