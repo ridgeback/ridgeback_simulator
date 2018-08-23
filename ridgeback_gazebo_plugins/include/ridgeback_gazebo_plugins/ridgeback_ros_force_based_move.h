@@ -30,8 +30,6 @@
 #include <boost/thread.hpp>
 #include <map>
 
-// #include <ignition/math/Pose3.hh>
-// #include <ignition/math/Vector3.hh>
 #include <gazebo/common/common.hh>
 #include <gazebo/physics/physics.hh>
 #include <sdf/sdf.hh>
