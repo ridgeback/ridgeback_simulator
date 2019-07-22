@@ -2,6 +2,9 @@
 Changelog for package ridgeback_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.0.3 (2018-04-26)
 ------------------
 
