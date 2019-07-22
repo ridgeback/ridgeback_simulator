@@ -2,8 +2,8 @@
 Changelog for package ridgeback_gazebo_plugins
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.0 (2019-07-22)
+------------------
 * [ridgeback_gazebo_plugins] Updated dependency for Gazebo 9.
 * Removing commented includes
 * Changes to make the pkg compatible with Gazebo 9 libraries
