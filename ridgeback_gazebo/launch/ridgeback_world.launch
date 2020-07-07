@@ -4,6 +4,12 @@
   <arg name="headless" default="false" />
   <arg name="world_name" default="$(find ridgeback_gazebo)/worlds/ridgeback_race.world" />
 
+  <!-- Robot Spawn Pose -->
+  <arg name="x" default="0"/>
+  <arg name="y" default="0"/>
+  <arg name="z" default="0.1"/>
+  <arg name="yaw" default="0"/>
+
   <!-- Configuration of Ridgeback which you would like to simulate.
        See ridgeback_description for details. -->
   <arg name="config" default="$(optenv RIDGEBACK_CONFIG base)" />
@@ -19,36 +25,12 @@
   </include>
 
   <!-- Load Ridgeback's description, controllers, and teleop nodes. -->
-  <include file="$(find ridgeback_description)/launch/description.launch">
+  <include file="$(find ridgeback_gazebo)/launch/spawn_ridgeback.launch">
     <arg name="config" value="$(arg config)" />
-  </include>
-  <include file="$(find ridgeback_control)/launch/control.launch" />
-  <include file="$(find ridgeback_control)/launch/teleop.launch">
-    <arg name="joystick" value="false"/>
+    <arg name="x" value="$(arg x)"/>
+    <arg name="y" default="$(arg y)"/>
+    <arg name="z" default="$(arg z)"/>
+    <arg name="yaw" default="$(arg yaw)"/>
   </include>
 
-  <rosparam param="/gazebo_ros_control/pid_gains">
-    front_left_wheel:
-      p: 1
-      i: 0.1
-      d: 0
-    front_right_wheel:
-      p: 1
-      i: 0.1
-      d: 0
-    rear_left_wheel:
-      p: 1
-      i: 0.1
-      d: 0
-    rear_right_wheel:
-      p: 1
-      i: 0.1
-      d: 0
-  </rosparam>
-
-  <!-- Spawn Ridgeback -->
-  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
-        args="-urdf -model ridgeback -param robot_description -x 0 -y 0 -z 0.1" />
-  <!--<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
-        args="-sdf -model ridgeback -file /Users/mikepurvis/ridgeback_ws/ridgeback.sdf -x 0 -y 0 -z 0.1" /> -->
 </launch>
