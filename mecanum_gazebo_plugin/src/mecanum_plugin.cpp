@@ -57,6 +57,14 @@ void MecanumPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
   // Store the model
   model_ = _parent;
 
+  auto physics = model_->GetWorld()->Physics()->GetType();
+  if (physics != "ode" && physics != "dart")
+  {
+    ROS_FATAL("Only ODE and Dart physics engines are supported with mecanum wheels!");
+    return;
+  }
+
+
   std::string link_name;
 
   if (_sdf->HasElement("wheelLinkName"))
