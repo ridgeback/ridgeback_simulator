@@ -2,8 +2,8 @@
 Software License Agreement (BSD)
 
 \file      mecanum_plugin.cpp
-\authors   Mike Purvis <mpurvis@clearpathrobotics.com>
-\copyright Copyright (c) 2015, Clearpath Robotics, Inc., All rights reserved.
+\authors   Mike Purvis <mpurvis@clearpathrobotics.com>, Vladimir Ivan <v.ivan@ed.ac.uk>
+\copyright Copyright (c) 2020, Clearpath Robotics, Inc., The University of Edinburgh, All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that
 the following conditions are met:
@@ -25,12 +25,10 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 
 #include <gazebo/common/Events.hh>
 #include <gazebo/common/Plugin.hh>
-#include <gazebo/physics/ode/ODESurfaceParams.hh>
 #include <gazebo/physics/physics.hh>
 #include <ros/console.h>
 
 #include <string>
-
 
 namespace gazebo
 {
@@ -47,10 +45,8 @@ private:
   event::ConnectionPtr update_connection_;
   physics::ModelPtr model_;
   physics::LinkPtr wheel_link_;
-  physics::LinkPtr fixed_link_;
-  double roller_angle_;
-  double roller_friction_;
-  double roller_skid_friction_;
+  physics::JointPtr passive_joint_;
+  ignition::math::v4::Vector3d axis_;
 };
 
 // Register this plugin with the simulator
@@ -79,52 +75,41 @@ void MecanumPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
     return;
   }
 
-  if (_sdf->HasElement("fixedLinkName"))
+  if (_sdf->HasElement("axis"))
   {
-    link_name = _sdf->Get<std::string>("fixedLinkName");
-    fixed_link_ = model_->GetLink(link_name);
-    if (!fixed_link_)
+    std::istringstream iss(_sdf->Get<std::string>("axis"));
+    std::vector<std::string> numbers(std::istream_iterator<std::string>{iss}, 
+                                    std::istream_iterator<std::string>());
+    if (numbers.size() == 3)
     {
-      ROS_FATAL_STREAM("Fixed link [" << link_name << "] not found!");
+        axis_.X() = std::stod(numbers[0]);
+        axis_.Y() = std::stod(numbers[1]);
+        axis_.Z() = std::stod(numbers[2]);
+        axis_ = axis_.Normalize();
+        if (axis_.Length() < 1.0 - std::numeric_limits<double>::epsilon())
+        {
+          ROS_FATAL_STREAM("The `axis` parameter is not a valid vector.");
+          return;
+        }
+    }
+    else
+    {
+      ROS_FATAL("The mecanum plugin requires a valid `axis` parameter.");
       return;
     }
+    
   }
   else
   {
-    ROS_FATAL("The mecanum plugin requires a `fixedLinkName` parameter.");
+    ROS_FATAL("The mecanum plugin requires an `axis` parameter.");
     return;
   }
 
-  if (_sdf->HasElement("rollerAngle"))
-  {
-    roller_angle_ = _sdf->Get<double>("rollerAngle");
-  }
-  else
-  {
-    roller_angle_ = M_PI / 4;
-  }
-
-  if (_sdf->HasElement("rollerFriction"))
-  {
-    roller_friction_ = _sdf->Get<double>("rollerFriction");
-  }
-  else
-  {
-    roller_friction_ = 100;
-  }
-
-  if (_sdf->HasElement("rollerSkidFriction"))
-  {
-    roller_skid_friction_ = _sdf->Get<double>("rollerSkidFriction");
-  }
-  else
-  {
-    roller_skid_friction_ = 100000;
-  }
+  passive_joint_ = wheel_link_->GetChildJoints()[0];
 
   ROS_INFO_STREAM("Mecanum plugin initialized for " << wheel_link_->GetName() <<
-                  ", referenced to " << fixed_link_->GetName() << ", with a roller " <<
-                  "angle of " << roller_angle_ << " radians.");
+                  ", axis: [" << axis_.X() << ", " <<  axis_.Y() << ", " <<  
+                  axis_.Z() <<"]");
 
   // Register update event handler
   this->update_connection_ = event::Events::ConnectWorldUpdateBegin(
@@ -133,29 +118,8 @@ void MecanumPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
 
 void MecanumPlugin::GazeboUpdate()
 {
-  math::Pose wheel_pose = wheel_link_->GetWorldCoGPose();
-  math::Pose fixed_pose = fixed_link_->GetWorldCoGPose();
-  math::Quaternion wheel_orientation = wheel_pose.CoordRotationSub(fixed_pose.rot);
-  double wheel_angle = wheel_orientation.GetPitch();
-  ROS_DEBUG_STREAM(wheel_link_->GetName() << " angle is " << wheel_angle << " radians.");
-
-  // TODO: Understand better what the deal is with multiple collisions on a link.
-  unsigned int collision_index = 0;
-  physics::SurfaceParamsPtr surface = wheel_link_->GetCollision(collision_index)->GetSurface();
-
-  // TODO: Check that the physics engine is ODE to avoid a segfault here.
-  physics::ODESurfaceParams* ode_surface = dynamic_cast<physics::ODESurfaceParams*>(surface.get());
-  physics::FrictionPyramid& fric(ode_surface->frictionPyramid);
-
-  // TODO: Parameterize these.
-  fric.SetMuPrimary(roller_skid_friction_);
-  fric.SetMuSecondary(roller_friction_);
-
-  // TODO: Investigate replacing this manual trigonometry with Pose::rot::RotateVector. Doing this
-  // would also make it easier to support wheels which rotate about an axis other than Y.
-  fric.direction1.x = cos(roller_angle_) * cos(wheel_angle);
-  fric.direction1.y = sin(roller_angle_);
-  fric.direction1.z = cos(roller_angle_) * sin(wheel_angle);
+  // Re-align the passive hoint axis
+  passive_joint_->SetAxis(0, axis_);
 }
 
 }  // namespace gazebo

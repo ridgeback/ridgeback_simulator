@@ -3,9 +3,10 @@ project(mecanum_gazebo_plugin)
 
 find_package(catkin REQUIRED COMPONENTS rosconsole roslint)
 find_package(gazebo)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 
 catkin_package(
-  #  LIBRARIES mecanum_gazebo_plugin
+   #LIBRARIES mecanum_gazebo_plugin
 )
 
 include_directories(
@@ -13,15 +14,15 @@ include_directories(
   ${GAZEBO_INCLUDE_DIRS}
 )
 
-#add_library(${PROJECT_NAME} src/mecanum_plugin)
-#target_link_libraries(${PROJECT_NAME}
-#  ${catkin_LIBRARIES}
-#  ${GAZEBO_LIBRARIES}
-#)
+add_library(${PROJECT_NAME} src/mecanum_plugin)
+target_link_libraries(${PROJECT_NAME}
+ ${catkin_LIBRARIES}
+ ${GAZEBO_LIBRARIES}
+)
 
-# roslint_cpp()
-# roslint_add_test()
+roslint_cpp()
+roslint_add_test()
 
-#install(TARGETS ${PROJECT_NAME}
-#  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#)
+install(TARGETS ${PROJECT_NAME}
+ LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+)
