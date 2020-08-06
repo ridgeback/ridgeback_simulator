@@ -14,6 +14,9 @@
        See ridgeback_description for details. -->
   <arg name="config" default="$(optenv RIDGEBACK_CONFIG base)" />
 
+  <!-- optionally disable teleoperation -->
+  <arg name="joystick" default="true" />
+
   <!-- Launch Gazebo with the specified world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="debug" value="0" />
@@ -31,6 +34,7 @@
     <arg name="y" default="$(arg y)"/>
     <arg name="z" default="$(arg z)"/>
     <arg name="yaw" default="$(arg yaw)"/>
+    <arg name="joystick" default="$(arg joystick)" />
   </include>
 
 </launch>

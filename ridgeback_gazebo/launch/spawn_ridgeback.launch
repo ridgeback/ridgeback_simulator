@@ -4,6 +4,7 @@
   <arg name="y" default="0"/>
   <arg name="z" default="0.1"/>
   <arg name="yaw" default="0"/>
+  <arg name="joystick" default="true" />
 
   <!-- Configuration of Ridgeback which you would like to simulate.
        See ridgeback_description for details. -->
@@ -15,7 +16,7 @@
   </include>
   <include file="$(find ridgeback_control)/launch/control.launch" />
   <include file="$(find ridgeback_control)/launch/teleop.launch">
-    <arg name="joystick" value="false"/>
+    <arg name="joystick" value="$(arg joystick)"/>
   </include>
 
   <rosparam param="/gazebo_ros_control/pid_gains">
