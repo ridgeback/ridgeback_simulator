@@ -26,6 +26,7 @@
   </include>
 
   <include file="$(find ridgeback_gazebo)/launch/spawn_ridgeback.launch">
+    <arg name="config" value="$(arg config)" />
     <arg name="x" value="$(arg x)" />
     <arg name="y" value="$(arg y)" />
     <arg name="z" value="$(arg z)" />
