@@ -2,8 +2,8 @@
 Changelog for package ridgeback_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.4 (2020-08-24)
+------------------
 * Enable the joystick by default, add an option to disable it
 * Split spawning platform into dedicated launch
 * Contributors: Chris Iverach-Brereton, Dave Niewinski
