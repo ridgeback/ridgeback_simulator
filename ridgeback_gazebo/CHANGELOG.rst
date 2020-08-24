@@ -2,8 +2,8 @@
 Changelog for package ridgeback_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.1 (2020-08-24)
+------------------
 * Apply the config argument properly
 * Move spawning the ridgeback into a separate file for use with the new sim environments. Enable teleoperation by default
 * Add Robot Spawn Pose Launch Args
