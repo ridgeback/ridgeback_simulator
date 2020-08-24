@@ -2,6 +2,9 @@
 Changelog for package mecanum_gazebo_plugin
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.1.0 (2019-07-22)
 ------------------
 
