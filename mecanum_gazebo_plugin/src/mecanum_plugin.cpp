@@ -126,7 +126,7 @@ void MecanumPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
 
 void MecanumPlugin::GazeboUpdate()
 {
-  // Re-align the passive hoint axis
+  // Re-align the passive joint axis
   passive_joint_->SetAxis(0, axis_);
 }
 
