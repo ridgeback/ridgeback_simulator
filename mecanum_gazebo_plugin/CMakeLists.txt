@@ -5,9 +5,7 @@ find_package(catkin REQUIRED COMPONENTS rosconsole roslint)
 find_package(gazebo)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 
-catkin_package(
-   #LIBRARIES mecanum_gazebo_plugin
-)
+catkin_package()
 
 include_directories(
   ${catkin_INCLUDE_DIRS}
