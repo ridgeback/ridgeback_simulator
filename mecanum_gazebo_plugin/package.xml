@@ -4,7 +4,7 @@
   <version>0.1.1</version>
   <description>Plugin which uses a passive revolute joint aligned with the roller and a shphere shape to simulate mecanum wheels.</description>
 
-  <maintainer email="v.ivan@ed.ac.uk">Vladimir Ivan</maintainer>
+  <maintainer email="mpurvis@clearpathrobotics.com">Mike Purvis</maintainer>
   <author>Mike Purvis</author>
   <author>Vladimir Ivan</author>
 
