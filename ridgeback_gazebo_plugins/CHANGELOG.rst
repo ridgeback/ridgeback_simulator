@@ -2,6 +2,11 @@
 Changelog for package ridgeback_gazebo_plugins
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Update the libgazebo dependency to use gazebo11 instead of gazebo9
+* Contributors: Chris Iverach-Brereton
+
 0.1.1 (2020-08-24)
 ------------------
 
