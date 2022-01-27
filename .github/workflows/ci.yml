@@ -4,13 +4,13 @@ on: [push, pull_request]
 
 jobs:
 
-  ridgeback_simulator_melodic_ci:
-    name: Melodic
+  ridgeback_simulator_noetic_ci:
+    name: noetic
     strategy:
       matrix:
         env:
-          - {ROS_DISTRO: melodic, ROS_REPO: main}
-          - {ROS_DISTRO: melodic, ROS_REPO: testing}
+          - {ROS_DISTRO: noetic, ROS_REPO: main}
+          - {ROS_DISTRO: noetic, ROS_REPO: testing}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
