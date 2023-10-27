@@ -2,10 +2,11 @@
 <package format="2">
   <name>mecanum_gazebo_plugin</name>
   <version>0.1.1</version>
-  <description>Plugin which uses directional friction to simulate mecanum wheels.</description>
+  <description>Plugin which uses a passive revolute joint aligned with the roller and a shphere shape to simulate mecanum wheels.</description>
 
   <maintainer email="mpurvis@clearpathrobotics.com">Mike Purvis</maintainer>
   <author>Mike Purvis</author>
+  <author>Vladimir Ivan</author>
 
   <license>BSD</license>
 
@@ -13,6 +14,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>roslint</build_depend>
+  <build_depend>libgazebo9-dev</build_depend>
   <depend>gazebo</depend>
   <depend>rosconsole</depend>
 </package>
